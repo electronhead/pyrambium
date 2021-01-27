@@ -1,4 +1,4 @@
-from mothership.base.service.mothership import mothership
+from mothership.base.service.mothership import MothershipsLittleHelper
 from mothership.app.shared import return_success, raised_exception
 from fastapi import APIRouter, status
 
@@ -6,6 +6,8 @@ router = APIRouter(
     prefix="/mothership",
     tags = ['Mothership']
 )
+
+mothership = MothershipsLittleHelper.get()
 
 # ====================
 @router.get('/', status_code=status.HTTP_200_OK)

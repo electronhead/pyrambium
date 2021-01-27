@@ -67,7 +67,7 @@ class Mothership(BaseModel):
         # returns the total number of actions in the schedulers_actions dictionary
         # should be equal to the number of jobs in related Continuous instance
         with Lok.lock:
-            return sum(len(action_array) for action_array in self.schedulers_actions.values)
+            return sum(len(action_array) for action_array in self.schedulers_actions.values())
 
     def add_action(self, action_name:str, action:Action):
         with Lok.lock:
@@ -200,10 +200,16 @@ class Lok:
     def reset(cls):
         cls.lock = RLock()
 
-mothership = Mothership(saved_dir=Dirs.saved_dir())
-try:
-    mothership = mothership.load_current()
-except Exception as e:
-    print(str(e)) #LOG THIS
-mothership.initialize()
-mothership.reschedule_all_schedulers()
+class MothershipsLittleHelper:
+    mothership = None
+    @classmethod
+    def get(cls):
+        if not cls.mothership:
+            cls.mothership = Mothership(saved_dir=Dirs.saved_dir())
+            try:    
+                cls.mothership = cls.mothership.load_current()
+            except Exception as e:
+                pass # TODO: log it!
+            cls.mothership.initialize()
+            cls.mothership.reschedule_all_schedulers()
+        return cls.mothership
