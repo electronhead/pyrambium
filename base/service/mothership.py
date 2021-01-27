@@ -160,28 +160,16 @@ class Mothership(BaseModel):
                 continuous.clear(tag)
             self.schedulers_actions[scheduler_name].clear()
             self.save_current()
-    def reschedule_action(self, action_name:str, continuous:Continuous=Continuous.get()):
-        with Lok.lock:
-            assert action_name in self.actions, f"action ({action_name}) does not exist"
-            for scheduler_name in self.schedulers_actions:
-                if action_name in self.schedulers_actions[scheduler_name]:
-                    tag = self.scheduler_tag(scheduler_name, action_name)
-                    continuous.clear(tag)
-                    action = self.actions[action_name]
-                    self.schedule_action(scheduler_name, action, continuous)
-    def reschedule_scheduler(self, scheduler_name:str, continuous:Continuous=Continuous.get()):
-        with Lok.lock:
-            assert scheduler_name in self.schedulers, f"scheduler ({scheduler_name}) does not exist"
-            for action_name in self.schedulers_actions[scheduler_name]:
-                tag = self.scheduler_tag(scheduler_name, action_name)
-                continuous.clear(tag)
-                scheduler = self.get_scheduler(scheduler_name)
-                action = self.actions[action_name]
-                scheduler.schedule_action(tag, action, continuous)
     def reschedule_all_schedulers(self, continuous:Continuous=Continuous.get()):
         with Lok.lock:
             for scheduler_name in self.schedulers_actions:
                 self.reschedule_scheduler(scheduler_name, continuous)
+                for action_name in self.schedulers_actions[scheduler_name]:
+                    tag = self.scheduler_tag(scheduler_name, action_name)
+                    continuous.clear(tag)
+                    scheduler = self.get_scheduler(scheduler_name)
+                    action = self.actions[action_name]
+                    scheduler.schedule_action(tag, action, continuous)
   
     def scheduler_tag(self, schedule_name:str, action_name:str):
         return f"{schedule_name}:{action_name}"

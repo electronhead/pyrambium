@@ -61,11 +61,3 @@ def unschedule_action(action_name:str):
         return return_success(f"action ({action_name}) was successfully unscheduled")
     except Exception as e:
         raise raised_exception(f"failed to unschedule action ({action_name})", e)
-
-@router.get('/actions/{action_name}/reschedule', status_code=status.HTTP_202_ACCEPTED)
-def reschedule_action(action_name:str):
-    try:
-        mothership.reschedule_action(action_name=action_name)
-        return return_success(f"action ({action_name}) was successfully unscheduled")
-    except Exception as e:
-        raise raised_exception(f"failed to reschedule action ({action_name})", e)

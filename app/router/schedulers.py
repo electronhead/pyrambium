@@ -69,15 +69,7 @@ def unschedule_scheduler(scheduler_name:str):
     except Exception as e:
         raise raised_exception(f"failed to unschedule scheduler ({scheduler_name})", e)
 
-@router.get('/schedulers/{scheduler_name}/reschedule', status_code=status.HTTP_202_ACCEPTED)
-def reschedule_scheduler(scheduler_name:str):
-    try:
-        mothership.reschedule_scheduler(scheduler_name=scheduler_name)
-        return return_success(f"scheduler ({scheduler_name}) was successfully unscheduled")
-    except Exception as e:
-        raise raised_exception(f"failed to reschedule scheduler ({scheduler_name})", e)
-
-@router.get('/schedulers/reschedule', status_code=status.HTTP_202_ACCEPTED)
+@router.get('/schedulers/reschedule_all', status_code=status.HTTP_202_ACCEPTED)
 def reschedule_all_schedulers():
     try:
         mothership.reschedule_all_schedulers()
