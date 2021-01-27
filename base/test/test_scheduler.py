@@ -1,14 +1,4 @@
 def test_during_period():
-    """
-    def during_period(self, callable, tag:str):
-        if (self.start is not None) and (self.stop is not None):
-            is_in_period_wrapper = lambda start, stop: (lambda now: start < now and now < stop if (start < stop) else start < now or now < stop)
-            is_in_period = is_in_period_wrapper(self.start, self.stop)
-            do_nothing = lambda tag, scheduler_info: None
-            return lambda: (callable if is_in_period(Now.t()) else do_nothing)(tag=tag, scheduler_info=self.info())
-        else:
-            return lambda: callable(tag=tag, scheduler_info=self.info())
-    """
     from mothership.base.service.scheduler import Scheduler
     from mothership.base.service.util import Now
     from datetime import time
@@ -30,3 +20,39 @@ def test_during_period():
         assert daytime_callable() and not nighttime_callable()
     else:
         assert not daytime_callable() and nighttime_callable()
+
+def test_file_action(tmp_path):
+    """
+    This test exercises the schedule_timely_callable method.
+    """
+    from pydantic import BaseModel
+    from mothership.base.service.action import Action, ActionPayload
+    from mothership.base.service.continuous import Continuous
+    from mothership.base.service.util import PP
+    import time
+
+    class FileAction:
+        def execute(self, tag=None, scheduler_info:dict=None):
+            path = tmp_path / 'test.txt'
+            with path.open(mode='a') as fid:
+                fid.write('blee\n')
+            return {'outcome':'file appended'}
+
+    class Suite():
+        def __init__(self, action):
+            self.action = action
+        def gather(self):
+            path = tmp_path / 'test.txt'
+            with path.open(mode='r') as fid:
+                return sum(1 for line in fid)
+        def run(self):
+            continuous = Continuous()
+            continuous.schedule_timely_callable('tag', self.action.execute)
+            continuous.run_continuously()
+            time.sleep(4)
+            continuous.stop_running_continuously()
+            continuous.clear()
+    suite = Suite(FileAction())
+    suite.run()
+    line_count = suite.gather()
+    assert line_count and line_count >= 1, "no lines written to file"
