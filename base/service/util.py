@@ -145,10 +145,10 @@ class IP:
             addresses = [i['addr'] for i in ifaddresses(ifaceName).setdefault(AF_INET, [{'addr':'No IP addr'}] )]
             print ('%s: %s' % (ifaceName, ', '.join(addresses)))
     """
-    addr = netifaces.ifaddresses('en0').setdefault(netifaces.AF_INET)[0]['addr']
+    addr = "need a fix for linux"#netifaces.ifaddresses('en0').setdefault(netifaces.AF_INET)[0]['addr']
     @classmethod
     def reset(cls):
-        cls.addr = netifaces.ifaddresses('en0').setdefault(AF_INET)[0]['addr']
+        cls.addr = "need a fix for linux"#netifaces.ifaddresses('en0').setdefault(AF_INET)[0]['addr']
 
 class Dirs:
     output_label, output_default_dir = 'MOTHERSHIP_OUTPUT_DIR', '/tmp/mothership/output/'
