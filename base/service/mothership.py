@@ -163,7 +163,6 @@ class Mothership(BaseModel):
     def reschedule_all_schedulers(self, continuous:Continuous=Continuous.get()):
         with Lok.lock:
             for scheduler_name in self.schedulers_actions:
-                self.reschedule_scheduler(scheduler_name, continuous)
                 for action_name in self.schedulers_actions[scheduler_name]:
                     tag = self.scheduler_tag(scheduler_name, action_name)
                     continuous.clear(tag)

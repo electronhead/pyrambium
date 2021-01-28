@@ -85,9 +85,6 @@ def test_reschedule_action(tmp_path):
     mothership.unschedule_action('foo', continuous)
     mothership.schedule_action('bar', 'foo', continuous)
 
-    assert continuous.job_count() == 1
-    assert mothership.get_scheduled_action_count() == continuous.job_count()
-
     continuous.run_continuously()
     time.sleep(4)
     continuous.stop_running_continuously()
