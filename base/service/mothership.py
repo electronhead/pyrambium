@@ -6,10 +6,10 @@ endpoints of a restful api and supports testing outside of the restful api imple
 Instances of this class contain Schedulers and Actions, which can at any point be submitted to and removed from the
 job scheduling mechanism of the schedule library (refer to the 'continuous' module).
 """
-from mothership.base.service.util import PP, Dirs
-from mothership.base.service.action import Action
-from mothership.base.service.scheduler import Scheduler
-from mothership.base.service.continuous import Continuous
+from pyrambium.base.service.util import PP, Dirs
+from pyrambium.base.service.action import Action
+from pyrambium.base.service.scheduler import Scheduler
+from pyrambium.base.service.continuous import Continuous
 from pydantic import BaseModel
 from threading import RLock
 import pickle

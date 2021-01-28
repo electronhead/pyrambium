@@ -1,5 +1,5 @@
-from mothership.base.service.continuous import Continuous
-from mothership.base.service.util import TimeUnit
+from pyrambium.base.service.continuous import Continuous
+from pyrambium.base.service.util import TimeUnit
 import time
 
 def test_timely_callable(tmp_path):
@@ -66,9 +66,9 @@ def test_file_action(tmp_path):
     """
     This test exercises the schedule_timely_callable method.
     """
-    from mothership.base.service.action import Action, ActionPayload
-    from mothership.base.service.continuous import Continuous
-    from mothership.base.service.util import PP
+    from pyrambium.base.service.action import Action, ActionPayload
+    from pyrambium.base.service.continuous import Continuous
+    from pyrambium.base.service.util import PP
     import time
 
     class FileAction(Action):

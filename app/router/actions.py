@@ -1,9 +1,9 @@
-from mothership.base.service.action import Action
-import mothership.addendum.service.action
-from mothership.base.service.mothership import MothershipsLittleHelper
-from mothership.base.service.util import ResolveBody
+from pyrambium.base.service.action import Action
+import pyrambium.addendum.service.action
+from pyrambium.base.service.mothership import MothershipsLittleHelper
+from pyrambium.base.service.util import ResolveBody
 from fastapi import APIRouter, status, HTTPException, Depends
-from mothership.app.shared import return_success, raised_exception
+from pyrambium.app.shared import return_success, raised_exception
 
 router = APIRouter(
     prefix='',

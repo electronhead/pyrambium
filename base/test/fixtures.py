@@ -4,10 +4,10 @@ import pytest
 def friends(tmp_path):
     def stuff():
         # want a fresh tuple from the fixture
-        from mothership.base.service.mothership import Mothership
-        from mothership.base.service.action import FileHeartbeat
-        from mothership.base.service.scheduler import TimelyScheduler
-        from mothership.base.service.continuous import Continuous
+        from pyrambium.base.service.mothership import Mothership
+        from pyrambium.base.service.action import FileHeartbeat
+        from pyrambium.base.service.scheduler import TimelyScheduler
+        from pyrambium.base.service.continuous import Continuous
 
         saved_dir = str(tmp_path)
         output_file = str(tmp_path / 'output.txt')

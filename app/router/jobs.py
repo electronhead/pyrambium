@@ -1,5 +1,5 @@
-from mothership.base.service.continuous import Continuous
-from mothership.app.shared import return_success, raised_exception
+from pyrambium.base.service.continuous import Continuous
+from pyrambium.app.shared import return_success, raised_exception
 from fastapi import APIRouter, status
 
 router = APIRouter(

@@ -1,4 +1,4 @@
-from mothership.base.service.util import PP, IP, Now, object_info, HttpVerb
+from pyrambium.base.service.util import PP, IP, Now, object_info, HttpVerb
 from pydantic import BaseModel
 from typing import Optional
 import requests

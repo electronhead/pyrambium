@@ -1,1 +1,1 @@
-from mothership.base.service.action import Action
+from pyrambium.base.service.action import Action

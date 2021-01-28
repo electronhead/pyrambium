@@ -1,5 +1,5 @@
-from mothership.base.service.mothership import MothershipsLittleHelper
-from mothership.app.shared import return_success, raised_exception
+from pyrambium.base.service.mothership import MothershipsLittleHelper
+from pyrambium.app.shared import return_success, raised_exception
 from fastapi import APIRouter, status
 
 router = APIRouter(

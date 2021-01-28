@@ -112,7 +112,7 @@ class Output:
     """
     @classmethod
     def debug(cls):
-        return 'debug', '/Users/electronhead/dev/pivot/output/debug.txt'
+        return 'debug', Dirs.output_dir()
 
     @classmethod
     def pprint(cls, lev_fil:tuple[str,str], dictionary:dict):
@@ -151,8 +151,8 @@ class IP:
         cls.addr = "need a fix for linux"#netifaces.ifaddresses('en0').setdefault(AF_INET)[0]['addr']
 
 class Dirs:
-    output_label, output_default_dir = 'MOTHERSHIP_OUTPUT_DIR', '/tmp/mothership/output/'
-    saved_label, saved_default_dir = 'MOTHERSHIP_SAVED_DIR', '/tmp/mothership/saved/'
+    output_label, output_default_dir = 'PYRAMBIUM_OUTPUT_DIR', '/tmp/pyrambium/output/'
+    saved_label, saved_default_dir = 'PYRAMBIUM_SAVED_DIR', '/tmp/pyrambium/saved/'
     @classmethod
     def compute_dir(cls, label, default_dir):
         dir = getenv(label)

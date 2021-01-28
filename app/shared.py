@@ -2,7 +2,7 @@
 This code in this module is used in FastAPI path code.
 """
 from fastapi import status, HTTPException
-from mothership.base.service.util import Now
+from pyrambium.base.service.util import Now
 
 def return_success(mappish:dict):
     """

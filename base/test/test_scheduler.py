@@ -1,6 +1,6 @@
 def test_during_period():
-    from mothership.base.service.scheduler import Scheduler
-    from mothership.base.service.util import Now
+    from pyrambium.base.service.scheduler import Scheduler
+    from pyrambium.base.service.util import Now
     from datetime import time
 
     daytime = (time(6,0,0), time(18,0,0))

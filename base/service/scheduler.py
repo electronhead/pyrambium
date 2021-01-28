@@ -1,7 +1,7 @@
 from datetime import time
-from mothership.base.service.util import TimeUnit, Now, object_info
-from mothership.base.service.action import Action
-from mothership.base.service.continuous import Continuous
+from pyrambium.base.service.util import TimeUnit, Now, object_info
+from pyrambium.base.service.action import Action
+from pyrambium.base.service.continuous import Continuous
 from pydantic import BaseModel
 from typing import Optional
 from collections.abc import Callable

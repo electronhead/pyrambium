@@ -4,7 +4,7 @@ This module contains the class that schedules and runs jobs.
 
 from schedule import Scheduler
 from threading import Event, Thread
-from mothership.base.service.util import Now, TimeUnit
+from pyrambium.base.service.util import Now, TimeUnit
 import time
 from collections.abc import Callable
 

@@ -1,6 +1,6 @@
 def test_now_1():
     from datetime import datetime, timedelta
-    from mothership.base.service.util import Now
+    from pyrambium.base.service.util import Now
     now1 = datetime.now()
     now2 = Now.dt()
     elapsed = now2 - now1
@@ -8,7 +8,7 @@ def test_now_1():
 
 def test_now_2():
     from datetime import datetime, timedelta
-    from mothership.base.service.util import Now
+    from pyrambium.base.service.util import Now
     now = datetime.now()
     now2 = Now.t()
     date2 = datetime(year=now.year, month=now.month, day=now.day, hour=now2.hour, minute=now2.minute, second=now2.second, microsecond=now2.microsecond)
@@ -17,14 +17,14 @@ def test_now_2():
 
 def test_now_3():
     from datetime import datetime, timedelta
-    from mothership.base.service.util import Now
+    from pyrambium.base.service.util import Now
     now1 = datetime.now().time()
     now1_str = now1.strftime('%H:%M:%S')
     now2 = Now.s()
     assert now1_str in now2
 
 def test_all_visible_subclasses():
-    from mothership.base.service.util import all_visible_subclasses
+    from pyrambium.base.service.util import all_visible_subclasses
     class A:
         pass
     class B(A):
@@ -38,7 +38,7 @@ def test_all_visible_subclasses():
     assert x == y
 
 def test_key_strings_from_class():
-    from mothership.base.service.util import key_strings_from_class
+    from pyrambium.base.service.util import key_strings_from_class
     from pydantic import BaseModel
     class A(BaseModel):
         a:str
@@ -48,7 +48,7 @@ def test_key_strings_from_class():
     assert x == y
 
 def test_key_strings_from_dict():
-    from mothership.base.service.util import key_strings_from_dict
+    from pyrambium.base.service.util import key_strings_from_dict
     x = {'a', 'b'}
     y = key_strings_from_dict({'a':1, 'b':2})
     assert x == y

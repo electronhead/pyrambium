@@ -1,5 +1,5 @@
 import pytest
-from mothership.base.test.fixtures import friends
+from pyrambium.base.test.fixtures import friends
 
 def test_schedule_action(friends):
     """
