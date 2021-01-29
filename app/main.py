@@ -8,7 +8,7 @@ app = FastAPI()
 
 @app.get('/')
 async def root():
-    return {'message':'Welcome to the Mothership!'}
+    return {'message':'Welcome to Pyrambium!'}
 
 app.include_router(actions.router)
 app.include_router(schedulers.router)
