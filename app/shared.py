@@ -5,11 +5,11 @@ from fastapi import status, HTTPException
 from pyrambium.base.service.mothership import MothershipsLittleHelper
 from pyrambium.base.service.util import Now
 
-def return_success(mappish:dict):
+def return_success(dictionary:dict):
     """
     for successful returns
     """
-    return {'outcome': mappish, 'time':Now.s()}
+    return dictionary
 
 def raised_exception(text:str, exception:Exception):
     """

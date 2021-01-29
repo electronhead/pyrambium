@@ -1,5 +1,7 @@
 from pyrambium.base.service.scheduler import Scheduler
 from pyrambium.base.service.action import Action
+from pyrambium.base.service.util import resolve_instance
+from pyrambium.base.service.mothership import Mothership
 from pydantic import BaseModel
 import requests
 
@@ -16,10 +18,13 @@ class ApiServer(BaseModel):
         return self.get(f"/mothership//save")
     def retrieve_mothership(self, file:str):
         return self.get(f"/mothership//retrieve/{file}")
+    def get_mothership(self):
+        dictionary = self.get_mothership_dict()
+        return Mothership.instantiate_from_dict(dictionary)
 
     # /actions
     def get_action(self, action_name:str):
-        return self.get(f"/actions/{action_name}")
+        return resolve_instance(Action, self.get(f"/actions/{action_name}"))
     def add_action(self, action_name:str, action:Action):
         return self.put(f"/actions/{action_name}", action)
     def remove_action(self, action_name:str):
@@ -35,7 +40,7 @@ class ApiServer(BaseModel):
     def schedule_action(self, scheduler_name:str, action_name:str):
         return self.get(f"/schedulers/{scheduler_name}/actions/{action_name}")
     def get_scheduler(self, scheduler_name:str):
-        return self.get(f"/schedulers/{scheduler_name}")
+        return resolve_instance(Scheduler, self.get(f"/schedulers/{scheduler_name}"))
     def add_scheduler(self, scheduler_name:str, scheduler:Scheduler):
         return self.put(f"/schedulers/{scheduler_name}", scheduler)
     def remove_scheduler(self, scheduler_name:str):
@@ -60,6 +65,8 @@ class ApiServer(BaseModel):
     # verbs
     def get(self, path:str):
         return self.perform(requests.get, path)
+    def get_base_model(self, path:str):
+        return self.perform_get_base_model(requests.get, path)
     def put(self, path:str, data:BaseModel):
         return self.perform_base_model(requests.put, path, data)
     def post(self, path:str, data:BaseModel):
@@ -73,7 +80,7 @@ class ApiServer(BaseModel):
         cmd = f"http://{self.ip_addr}:{self.port}{path}"
         response = verb(cmd, data)
         return response.json()
-    def perform_base_model(self, verb, path, data=BaseModel):
+    def perform_base_model(self, verb, path, data:BaseModel):
         cmd = f"http://{self.ip_addr}:{self.port}{path}"
         response = verb(cmd, data.json())
         return response.json()

@@ -9,12 +9,11 @@ router = APIRouter(
     tags=['Actions']
 )
 
-# ====================
 @router.get('/actions/{action_name}', status_code=status.HTTP_200_OK)
 def get_action(action_name:str):
     try:
         action = get_mothership().get_action(action_name=action_name)
-        return return_success(action.dict())
+        return return_success(action)
     except Exception as e:
         raise raised_exception(f"failed to retrieve the action ({action_name})", e)
 

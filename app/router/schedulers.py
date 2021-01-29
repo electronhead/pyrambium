@@ -21,9 +21,9 @@ def schedule_action(scheduler_name:str, action_name:str):
 def get_scheduler(scheduler_name:str):
     try:
         scheduler = get_mothership().get_scheduler(scheduler_name=scheduler_name)
-        return return_success(scheduler.dict())
+        return return_success(scheduler)
     except Exception as e:
-        raise raised_exception(f"failed to retrieve the action ({action_name})", e)
+        raise raised_exception(f"failed to retrieve the scheduler ({action_name})", e)
 
 @router.put('/schedulers/{scheduler_name}', status_code=status.HTTP_201_CREATED)
 def add_scheduler(scheduler_name:str, scheduler=Depends(ResolveBody(Scheduler))):

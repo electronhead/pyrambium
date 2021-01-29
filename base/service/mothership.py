@@ -6,9 +6,11 @@ endpoints of a restful api and supports testing outside of the restful api imple
 Instances of this class contain Schedulers and Actions, which can at any point be submitted to and removed from the
 job scheduling mechanism of the schedule library (refer to the 'continuous' module).
 """
-from pyrambium.base.service.util import PP, Dirs
+from pyrambium.base.service.util import PP, Dirs, resolve_instance
 from pyrambium.base.service.action import Action
 from pyrambium.base.service.scheduler import Scheduler
+from pyrambium.addendum.service.action import Action
+from pyrambium.addendum.service.scheduler import Scheduler
 from pyrambium.base.service.continuous import Continuous
 from pydantic import BaseModel
 from threading import RLock
@@ -25,6 +27,16 @@ class Mothership(BaseModel):
     schedulers: dict={}
     schedulers_actions: dict={}
     saved_dir: str=None
+
+    def get_actions(self):
+        with Lok.lock:
+            return self.actions
+    def get_schedulers(self):
+        with Lok.lock:
+            return self.schedulers
+    def get_schedulers_actions(self):
+        with Lok.lock:
+            return self.schedulers_actions
 
     def initialize(self):
         Lok.reset()
@@ -78,6 +90,9 @@ class Mothership(BaseModel):
         with Lok.lock:
             assert action_name in self.actions, f"action ({action_name}) does not exist"
             return self.actions.get(action_name)
+    def get_actions(self):
+        with Lok.lock:
+            return self.actions
     def remove_action(self, action_name:str, continuous:Continuous=Continuous.get()):
         with Lok.lock:
             assert action_name in self.actions, f"action ({action_name}) does not exist"
@@ -170,8 +185,34 @@ class Mothership(BaseModel):
                     action = self.actions[action_name]
                     scheduler.schedule_action(tag, action, continuous)
   
+    # utility
     def scheduler_tag(self, schedule_name:str, action_name:str):
+        # computes job tag for scheduler and action
         return f"{schedule_name}:{action_name}"
+    @classmethod
+    def instantiate_from_dict(cls, dictionary:dict={}):
+        """
+        converts dictionary to an Mothership instance.
+        For resolution to the proper class, it's important that modules containing
+        Action and Scheduler classes are imported in this module.
+        """
+        if len(dictionary) is 0:
+            return Mothership(saved_dir=Dirs.saved_dir)
+        else:
+            saved_dir = dictionary['saved_dir']
+            actions = dictionary['actions']
+            schedulers = dictionary['schedulers']
+            schedulers_actions = dictionary['schedulers_actions']
+            # replace key's value for each key...
+            for action_name in actions:
+                actions[action_name] = resolve_instance(Action, actions[action_name])
+            for scheduler_name in schedulers:
+                schedulers[scheduler_name] = resolve_instance(Scheduler, schedulers[scheduler_name])
+            return Mothership(
+                saved_dir=saved_dir,
+                actions=actions,
+                schedulers=schedulers,
+                schedulers_actions=schedulers_actions)
 
 # ------------------
 """
