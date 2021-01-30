@@ -19,7 +19,6 @@ import json
 
 class Mothership(BaseModel):
     """
-
     Serializations of this class are stored in the local file system. When a runtime starts
     up, Mothership loads the last saved version.
     """
@@ -42,27 +41,30 @@ class Mothership(BaseModel):
         Lok.reset()
     def pprint(self):
         PP.pprint(self.dict())
-
-    def save(self, file:str):
-        with Lok.lock:
-            assert self.saved_dir, 'saved_dir must be set'
-            with open(self.saved_dir+file+'.pickle', 'wb') as outfile:
-                pickle.dump(self, outfile, pickle.HIGHEST_PROTOCOL)
-            with open(self.saved_dir+file+'.json', 'w') as outfile:
-                json.dump(self.json(), outfile, indent=2)
-    def load(self, file:str):
-        with Lok.lock:
-            assert self.saved_dir, 'saved_dir must be set'
-            with open(self.saved_dir+file+'.pickle', 'rb') as infile:
-                return pickle.load(infile)
-    def set_save_dir(self, saved_dir:str):
-        self.saved_dir = saved_dir
     
     def load_current(self):
-        return self.load('current')
+        return self.load_from_name('current')
     def save_current(self):
         with Lok.lock:
-            self.save('current')
+            self.save_to_name('current')
+
+    def load_from_name(self, name:str):
+        with Lok.lock:
+            assert self.saved_dir, 'saved_dir must be set'
+            with open(self.saved_dir+name+'.json', 'r') as infile:
+                json_string = json.load(infile)
+                dictionary = json.loads(json_string)
+                return self.instantiate_from_dict(dictionary)
+    def save_to_name(self, name:str):
+        with Lok.lock:
+            assert self.saved_dir, 'saved_dir must be set'
+            with open(self.saved_dir+name+'.json', 'w') as outfile:
+                json.dump(self.json(), outfile, indent=2)
+
+    def get_saved_dir(self):
+        return self.saved_dir
+    def set_saved_dir(self, saved_dir:str):
+        self.saved_dir = saved_dir
 
     def clear_all(self, continuous:Continuous=Continuous.get()):
         with Lok.lock:
@@ -229,6 +231,7 @@ class Lok:
         cls.lock = RLock()
 
 class MothershipsLittleHelper:
+    # this call returns the standard non-test Mothership singleton
     mothership = None
     @classmethod
     def get(cls):

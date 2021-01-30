@@ -10,14 +10,16 @@ class ApiServer(BaseModel):
     port:int=8000
 
     # /mothership
-    def get_mothership(self):
-        return Mothership.instantiate_from_dict(self.get(f"/mothership"))
+    def load_mothership(self):
+        return Mothership.instantiate_from_dict(self.get(f"/mothership/load"))
+    def save_mothership(self):
+        return self.get(f"/mothership/save")
     def clear_mothership(self):
         return self.get(f"/mothership/clear")
-    def save_mothership(self):
-        return self.get(f"/mothership//save")
-    def retrieve_mothership(self, file:str):
-        return self.get(f"/mothership//retrieve/{file}")
+    def load_mothership_from_name(self, name:str):
+        return Mothership.instantiate_from_dict(self.get(f"/mothership/load_from_name/{name}"))
+    def save_mothership_to_name(self, name:str):
+        return self.get(f"/mothership/save_to_name/{name}")
 
     # /actions
     def get_action(self, action_name:str):
@@ -73,6 +75,7 @@ class ApiServer(BaseModel):
     def delete(self, path:str):
         return self.perform(requests.delete, path)
 
+    # verb support
     def perform(self, verb, path, data=None):
         cmd = f"http://{self.ip_addr}:{self.port}{path}"
         response = verb(cmd, data)
