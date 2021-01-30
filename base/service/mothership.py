@@ -31,7 +31,7 @@ class Mothership(BaseModel):
     _continuous: Continuous = PrivateAttr(default_factory = Continuous.get)
 
     def get_continuous(self):
-        return _continuous
+        return self._continuous
     def set_continuous(self, continuous:Continuous):
         self._continuous = continuous
 
@@ -107,7 +107,7 @@ class Mothership(BaseModel):
         with Lok.lock:
             assert action_name in self.actions, f"action ({action_name}) does not exist"
             for scheduler_name in self.schedulers:
-                self.unschedule_action(action_name, self._continuous)
+                self.unschedule_action(action_name)
                 self.schedulers_actions[scheduler_name].remove(action_name)
             self.actions.pop(action_name, None)
             self.save_current()
@@ -226,7 +226,7 @@ class Mothership(BaseModel):
         For resolution to the proper class, it's important that modules containing
         Action and Scheduler classes are imported in this module.
         """
-        if len(dictionary) is 0:
+        if len(dictionary) == 0:
             return Mothership(saved_dir=Dirs.saved_dir)
         else:
             saved_dir = dictionary['saved_dir']

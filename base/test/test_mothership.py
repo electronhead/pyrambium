@@ -7,12 +7,13 @@ def test_schedule_action(friends):
     """
     import time
 
-    mothership, scheduler, action, continuous = friends()
+    mothership, scheduler, action = friends()
 
     mothership.add_action('foo', action)
     mothership.add_scheduler('bar', scheduler)
-    mothership.schedule_action('bar', 'foo', continuous)
+    mothership.schedule_action('bar', 'foo')
 
+    continuous = mothership.get_continuous()
     continuous.run_continuously()
     time.sleep(4)
     continuous.stop_running_continuously()
@@ -28,13 +29,14 @@ def test_unschedule_action(friends):
     """
     Tests unscheduling an action.
     """
-    mothership, scheduler, action, continuous = friends()
+    mothership, scheduler, action = friends()
 
     mothership.add_action('foo', action)
     mothership.add_scheduler('bar', scheduler)
-    mothership.schedule_action('bar', 'foo', continuous)
-    mothership.unschedule_action('foo', continuous)
+    mothership.schedule_action('bar', 'foo')
+    mothership.unschedule_action('foo')
 
+    continuous = mothership.get_continuous()
     assert continuous.job_count() == 0
     assert mothership.get_scheduled_action_count() == continuous.job_count()
 
@@ -44,14 +46,15 @@ def test_reschedule_action(friends):
     """
     import time
 
-    mothership, scheduler, action, continuous = friends()
+    mothership, scheduler, action = friends()
 
     mothership.add_action('foo', action)
     mothership.add_scheduler('bar', scheduler)
-    mothership.schedule_action('bar', 'foo', continuous)
-    mothership.unschedule_action('foo', continuous)
-    mothership.schedule_action('bar', 'foo', continuous)
+    mothership.schedule_action('bar', 'foo')
+    mothership.unschedule_action('foo')
+    mothership.schedule_action('bar', 'foo')
 
+    continuous = mothership.get_continuous()
     continuous.run_continuously()
     time.sleep(4)
     continuous.stop_running_continuously()

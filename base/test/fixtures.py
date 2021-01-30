@@ -11,10 +11,10 @@ def friends(tmp_path):
 
         saved_dir = str(tmp_path)
         output_file = str(tmp_path / 'output.txt')
-        continuous = Continuous()
         mothership = Mothership(saved_dir=saved_dir)
+        mothership.set_continuous(Continuous())
         action = FileHeartbeat(file=output_file)
         scheduler = TimelyScheduler(interval=1)
 
-        return mothership, scheduler, action, continuous
+        return mothership, scheduler, action
     return stuff

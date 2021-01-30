@@ -51,7 +51,7 @@ def retrieve_mothership(saved_dir:str):
     except Exception as e:
         raise raised_exception("failed to retrieve the Mothership", e)
 
-@router.put('/saved_dir/{saved_dir}', status_code=status.HTTP_200_OK)
+@router.get('/saved_dir/{saved_dir}', status_code=status.HTTP_200_OK)
 def retrieve_mothership(saved_dir:str):
     try:
         return return_success(f"saved_dir set to ({saved_dir})")
