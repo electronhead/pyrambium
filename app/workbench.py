@@ -10,17 +10,14 @@ class ApiServer(BaseModel):
     port:int=8000
 
     # /mothership
-    def get_mothership_dict(self):
-        return self.get(f"/mothership")
+    def get_mothership(self):
+        return Mothership.instantiate_from_dict(self.get(f"/mothership"))
     def clear_mothership(self):
         return self.get(f"/mothership/clear")
     def save_mothership(self):
         return self.get(f"/mothership//save")
     def retrieve_mothership(self, file:str):
         return self.get(f"/mothership//retrieve/{file}")
-    def get_mothership(self):
-        dictionary = self.get_mothership_dict()
-        return Mothership.instantiate_from_dict(dictionary)
 
     # /actions
     def get_action(self, action_name:str):
