@@ -6,6 +6,8 @@ from datetime import datetime
 from typing import Union
 from functools import reduce
 from os import environ, getenv
+from pydantic import BaseModel
+from typing import List
 
 # Enums
 
@@ -168,3 +170,9 @@ class Dirs:
     @classmethod
     def saved_dir(cls):
         return cls.compute_dir(cls.saved_label, cls.saved_default_dir)
+
+class FilePath(BaseModel):
+    path: List[str]
+
+    def delimited(self, delim:str='/'):
+        return delim + delim.join(self.path)

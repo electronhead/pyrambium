@@ -72,7 +72,9 @@ class Mothership(BaseModel):
     def get_saved_dir(self):
         return self.saved_dir
     def set_saved_dir(self, saved_dir:str):
-        self.saved_dir = saved_dir
+        with Lok.lock:
+            self.saved_dir = saved_dir
+            self.save_current()
 
     def clear_all(self):
         with Lok.lock:

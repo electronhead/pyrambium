@@ -65,3 +65,16 @@ def test_reschedule_action(friends):
         line = fid.readline()
 
     assert line is not None and type(line) is str and len(line) > 0
+
+def test_saved_dir_1(tmp_path):
+    from pyrambium.base.service.mothership import Mothership
+    saved_dir = str(tmp_path)
+    mothership = Mothership()
+    mothership.set_saved_dir(saved_dir=saved_dir)
+    assert mothership.get_saved_dir() == saved_dir
+
+def test_saved_dir_2(tmp_path):
+    saved_dir = str(tmp_path)
+    from pyrambium.base.service.mothership import Mothership
+    mothership = Mothership(saved_dir=saved_dir)
+    assert mothership.get_saved_dir() == saved_dir

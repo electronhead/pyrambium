@@ -52,3 +52,13 @@ def test_key_strings_from_dict():
     x = {'a', 'b'}
     y = key_strings_from_dict({'a':1, 'b':2})
     assert x == y
+
+def test_filepath_1():
+    from pyrambium.base.service.util import FilePath
+    path = FilePath(path = ['a', 'b', 'c'])
+    assert path.delimited() == '/a/b/c'
+
+def test_filepath_2():
+    from pyrambium.base.service.util import FilePath
+    path = FilePath(path = [])
+    assert path.delimited() == '/'
