@@ -8,6 +8,7 @@ from functools import reduce
 from os import environ, getenv
 from pydantic import BaseModel
 from typing import List
+from pathlib import Path
 
 # Enums
 
@@ -174,5 +175,8 @@ class Dirs:
 class FilePath(BaseModel):
     path: List[str]
 
+    def set_from_path(self, path:Path):
+        self.path = (str(path)).split('/')
     def delimited(self, delim:str='/'):
         return delim + delim.join(self.path)
+        

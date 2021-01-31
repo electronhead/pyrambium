@@ -35,6 +35,11 @@ class FileHeartbeat(Action):
             PP.pprint(payload, stream=outfile)
             outfile.write('\n')
         return {'outcome':'file appended', 'action':self.info()}
+    def set_xtra(self, xtra:dict=None):
+        self.xtra = xtra
+        return self
+    def get_xtra(self):
+        return self.xtra
 
 class SendHeartbeat(Action):
     """

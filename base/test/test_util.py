@@ -62,3 +62,7 @@ def test_filepath_2():
     from pyrambium.base.service.util import FilePath
     path = FilePath(path = [])
     assert path.delimited() == '/'
+
+def test_filepath_3():
+    from pathlib import Path
+    assert FilePath(Path('a/b/c')) == ['a', 'b', 'c']

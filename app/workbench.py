@@ -1,6 +1,6 @@
 from pyrambium.base.service.scheduler import Scheduler
 from pyrambium.base.service.action import Action
-from pyrambium.base.service.util import resolve_instance
+from pyrambium.base.service.util import resolve_instance, FilePath
 from pyrambium.base.service.mothership import Mothership
 from pydantic import BaseModel
 import requests
@@ -13,13 +13,17 @@ class ApiServer(BaseModel):
     def load_mothership(self):
         return Mothership.instantiate_from_dict(self.get(f"/mothership/load"))
     def save_mothership(self):
-        return self.get(f"/mothership/save")
+        return self.get("/mothership/save")
     def clear_mothership(self):
-        return self.get(f"/mothership/clear")
+        return self.get("/mothership/clear")
     def load_mothership_from_name(self, name:str):
         return Mothership.instantiate_from_dict(self.get(f"/mothership/load_from_name/{name}"))
     def save_mothership_to_name(self, name:str):
         return self.get(f"/mothership/save_to_name/{name}")
+    def get_saved_dir(self):
+        return self.get("/mothership/saved_dir")
+    def set_saved_dir(self, saved_dir:FilePath):
+        return self.put("/mothership/saved_dir", saved_dir)
 
     # /actions
     def get_action(self, action_name:str):
