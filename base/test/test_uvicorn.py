@@ -47,6 +47,10 @@ async def test_uvicorn_2(startup_and_shutdown_uvicorn, port, host, tmp_path):
     assert response.status_code == 200, 'failed to get saved_dir'
     saved_saved_dir = ResolveBody(FilePathe)(response.json())
     assert saved_saved_dir == saved_dir
+    
+    response = await get(base_url=base_url, path='/mothership/clear')
+    assert response.status_code == 200, 'failed to get clear mothership'
+    response = await get(base_url=base_url, path='/jobs/stop') # likely already stopped
 
     response = await put(base_url=base_url, path='/actions/foo', data=action)
     assert response.status_code == 200, f"failed to put action (foo)"
@@ -80,6 +84,10 @@ async def test_uvicorn_3(startup_and_shutdown_uvicorn, port, host, tmp_path):
     assert response.status_code == 200, 'failed to get saved_dir'
     saved_saved_dir = ResolveBody(FilePathe)(response.json())
     assert saved_saved_dir == saved_dir
+
+    response = await get(base_url=base_url, path='/mothership/clear')
+    assert response.status_code == 200, 'failed to get clear mothership'
+    response = await get(base_url=base_url, path='/jobs/stop') # likely already stopped
 
     response = await put(base_url=base_url, path='/actions/foo', data=action)
     assert response.status_code == 200, f"failed to put action (foo)"
@@ -121,6 +129,10 @@ async def test_uvicorn_4(startup_and_shutdown_uvicorn, port, host, tmp_path):
     assert response.status_code == 200, 'failed to get saved_dir'
     saved_saved_dir = ResolveBody(FilePathe)(response.json())
     assert saved_saved_dir == saved_dir
+    
+    response = await get(base_url=base_url, path='/mothership/clear')
+    assert response.status_code == 200, 'failed to get clear mothership'
+    response = await get(base_url=base_url, path='/jobs/stop') # likely already stopped
 
     response = await put(base_url=base_url, path='/actions/foo', data=action)
     assert response.status_code == 200, f"failed to put action (foo)"
