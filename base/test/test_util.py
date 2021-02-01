@@ -53,16 +53,8 @@ def test_key_strings_from_dict():
     y = key_strings_from_dict({'a':1, 'b':2})
     assert x == y
 
-def test_filepath_1():
-    from pyrambium.base.service.util import FilePath
-    path = FilePath(path = ['a', 'b', 'c'])
-    assert path.delimited() == '/a/b/c'
-
-def test_filepath_2():
-    from pyrambium.base.service.util import FilePath
-    path = FilePath(path = [])
-    assert path.delimited() == '/'
-
-def test_filepath_3():
-    from pathlib import Path
-    assert FilePath(Path('a/b/c')) == ['a', 'b', 'c']
+def test_filepathe():
+    from pyrambium.base.service.util import FilePathe
+    path = FilePathe(path = 'a/b/c')
+    new_path = FilePathe(**(path.dict()))
+    assert path.path == new_path.path, 'path reconstruction failed'

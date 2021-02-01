@@ -1,5 +1,5 @@
 from pyrambium.app.shared import return_success, raised_exception, get_mothership
-from pyrambium.base.service.util import FilePath
+from pyrambium.base.service.util import FilePathe
 from fastapi import APIRouter, status
 from typing import List
 
@@ -47,9 +47,9 @@ def save_to_name(name:str):
         raise raised_exception(f"failed to save the Mothership to ({name})", e)
 
 @router.put('/saved_dir', status_code=status.HTTP_200_OK)
-def set_saved_dir(dir_path:FilePath):
+def set_saved_dir(file_pathe:FilePathe):
     try:
-        saved_dir = dir_path.delimited()
+        saved_dir = file_pathe.path
         get_mothership(router).set_saved_dir(saved_dir)
         return return_success(f"saved_dir set to ({saved_dir})")
     except Exception as e:
@@ -58,6 +58,8 @@ def set_saved_dir(dir_path:FilePath):
 @router.get('/saved_dir', status_code=status.HTTP_200_OK)
 def get_saved_dir():
     try:
-        return return_success(get_mothership(router).get_saved_dir())
+        saved_dir = get_mothership(router).get_saved_dir()
+        file_pathe = FilePathe(path=saved_dir)
+        return return_success(file_pathe)
     except Exception as e:
         raise raised_exception("failed to get (saved_dir)", e)

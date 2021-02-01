@@ -17,7 +17,7 @@ def get_action(action_name:str):
     except Exception as e:
         raise raised_exception(f"failed to retrieve the action ({action_name})", e)
 
-@router.put('/actions/{action_name}', status_code=status.HTTP_201_CREATED)
+@router.put('/actions/{action_name}', status_code=status.HTTP_200_OK)
 def add_action(action_name:str, action=Depends(ResolveBody(Action))):
     try:
         assert action, f"couldn't resolve class for action ({action_name})"
@@ -26,7 +26,7 @@ def add_action(action_name:str, action=Depends(ResolveBody(Action))):
     except Exception as e:
         raise raised_exception(f"failed to add action ({action_name})", e)
 
-@router.delete('/actions/{action_name}', status_code=status.HTTP_202_ACCEPTED)
+@router.delete('/actions/{action_name}', status_code=status.HTTP_200_OK)
 def remove_action(action_name:str):
     try:
         get_mothership(router).remove_action(action_name=action_name)
@@ -34,7 +34,7 @@ def remove_action(action_name:str):
     except Exception as e:
         raise raised_exception(f"failed to remove action ({action_name})", e)
 
-@router.patch('/actions/{action_name}', status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/actions/{action_name}', status_code=status.HTTP_200_OK)
 def update_action(action_name:str, dictionary:dict):
     try:
         get_mothership(router).update_action(action_name=action_name, dictionary=dictionary)
@@ -50,7 +50,7 @@ def execute_action(action_name:str):
     except Exception as e:
         raise raised_exception(f"failed to execute action ({action_name})", e)
 
-@router.get('/actions/{action_name}/unschedule', status_code=status.HTTP_202_ACCEPTED)
+@router.get('/actions/{action_name}/unschedule', status_code=status.HTTP_200_OK)
 def unschedule_action(action_name:str):
     try:
         get_mothership(router).unschedule_action(action_name=action_name)

@@ -9,7 +9,7 @@ router = APIRouter(
     tags=['Schedulers']
 )
 
-@router.get('/schedulers/{scheduler_name}/actions/{action_name}', status_code=status.HTTP_202_ACCEPTED)
+@router.get('/schedulers/{scheduler_name}/actions/{action_name}', status_code=status.HTTP_200_OK)
 def schedule_action(scheduler_name:str, action_name:str):
     try:
         get_mothership(router).schedule_action(scheduler_name=scheduler_name, action_name=action_name)
@@ -25,7 +25,7 @@ def get_scheduler(scheduler_name:str):
     except Exception as e:
         raise raised_exception(f"failed to retrieve the scheduler ({action_name})", e)
 
-@router.put('/schedulers/{scheduler_name}', status_code=status.HTTP_201_CREATED)
+@router.put('/schedulers/{scheduler_name}', status_code=status.HTTP_200_OK)
 def add_scheduler(scheduler_name:str, scheduler=Depends(ResolveBody(Scheduler))):
     try:
         assert scheduler, f"couldn't resolve class for scheduler ({scheduler_name})"
@@ -34,7 +34,7 @@ def add_scheduler(scheduler_name:str, scheduler=Depends(ResolveBody(Scheduler)))
     except Exception as e:
         raise raised_exception(f"failed to add scheduler ({scheduler_name})", e)
 
-@router.delete('/schedulers/{scheduler_name}', status_code=status.HTTP_202_ACCEPTED)
+@router.delete('/schedulers/{scheduler_name}', status_code=status.HTTP_200_OK)
 def remove_scheduler(scheduler_name:str):
     try:
         get_mothership(router).remove_scheduler(scheduler_name=scheduler_name)
@@ -42,7 +42,7 @@ def remove_scheduler(scheduler_name:str):
     except Exception as e:
         raise raised_exception(f"failed to remove scheduler ({scheduler_name})", e)
 
-@router.patch('/schedulers/{scheduler_name}', status_code=status.HTTP_202_ACCEPTED)
+@router.patch('/schedulers/{scheduler_name}', status_code=status.HTTP_200_OK)
 def update_scheduler(scheduler_name:str, dictionary:dict):
     try:
         get_mothership(router).update_scheduler(scheduler_name=scheduler_name, dictionary=dictionary)
@@ -58,7 +58,7 @@ def execute_scheduler_actions(scheduler_name:str):
     except Exception as e:
         raise raised_exception(f"failed to execute scheduler ({scheduler_name}) actions", e)
 
-@router.get('/schedulers/{scheduler_name}/unschedule', status_code=status.HTTP_202_ACCEPTED)
+@router.get('/schedulers/{scheduler_name}/unschedule', status_code=status.HTTP_200_OK)
 def unschedule_scheduler(scheduler_name:str):
     try:
         get_mothership(router).unschedule_scheduler(scheduler_name=scheduler_name)
@@ -66,7 +66,7 @@ def unschedule_scheduler(scheduler_name:str):
     except Exception as e:
         raise raised_exception(f"failed to unschedule scheduler ({scheduler_name})", e)
 
-@router.get('/schedulers/reschedule_all', status_code=status.HTTP_202_ACCEPTED)
+@router.get('/schedulers/reschedule_all', status_code=status.HTTP_200_OK)
 def reschedule_all_schedulers():
     try:
         get_mothership(router).reschedule_all_schedulers()

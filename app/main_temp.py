@@ -11,7 +11,7 @@ app = FastAPI()
 
 @app.get('/')
 async def root():
-    return 'Pyrambium API server started'
+    return 'Pyrambium API server started (unit test)'
 
 mothership_instance = Mothership()
 continuous_instance = Continuous()

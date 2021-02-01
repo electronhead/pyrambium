@@ -54,17 +54,18 @@ def key_strings_from_dict(dictionary:dict):
 
 def resolve_instance(klass, dictionary:dict):
     dictionary_keys = key_strings_from_dict(dictionary)
-    subclasses = all_visible_subclasses(klass)
+    classes = all_visible_subclasses(klass)
+    classes.add(klass) # the top class might not be abstract
     min_count = 100
-    selected_subclass = None
-    for subclass in subclasses:
-        class_keys = key_strings_from_class(subclass)
-        if len(dictionary_keys-class_keys) == 0:
+    selected_class = None
+    for clas in classes:
+        class_keys = key_strings_from_class(clas)
+        if len(dictionary_keys - class_keys) == 0: # make sure class has enough fields
             count = len(class_keys)
-            if count<min_count:
-                selected_subclass = subclass
+            if count<min_count: # pick class with fewest fields, resulting in tightest conformance with dictionary
+                selected_class = clas
                 min_count = count
-    return selected_subclass(**dictionary) if selected_subclass else None
+    return selected_class(**dictionary) if selected_class else None
 
 def object_info(obj):
     return {
@@ -172,11 +173,5 @@ class Dirs:
     def saved_dir(cls):
         return cls.compute_dir(cls.saved_label, cls.saved_default_dir)
 
-class FilePath(BaseModel):
-    path: List[str]
-
-    def set_from_path(self, path:Path):
-        self.path = (str(path)).split('/')
-    def delimited(self, delim:str='/'):
-        return delim + delim.join(self.path)
-        
+class FilePathe(BaseModel):
+    path: str

@@ -3,11 +3,7 @@ pytest fixtures for unit testing
 """
 
 import random
-import asyncio
-from typing import Optional, List
 import pytest
-import uvicorn
-import app.main_temp as main_temp
 from pyrambium.base.service.mothership import Mothership
 from pyrambium.base.service.action import FileHeartbeat
 from pyrambium.base.service.scheduler import TimelyScheduler
@@ -45,52 +41,11 @@ def host():
     return '127.0.0.1'
 
 @pytest.fixture
-async def startup_and_shutdown_uvicorn(port, host):
-    """
-    This fixture starts a uvicorn server at first access of the fixture
-    during the running of the test case and shuts down the uvicorn server
-    upon exiting the test case function.
-    """
-    # from https://github.com/miguelgrinberg/python-socketio/issues/332
-    class UvicornTestServer(uvicorn.Server):
-        """Uvicorn test server
-
-        Usage:
-            @pytest.fixture
-            async def start_stop_server():
-                server = UvicornTestServer()
-                await server.up()
-                yield
-                await server.down()
-        """
-
-        def __init__(self):
-            """Create a Uvicorn test server
-            Args:
-                app (FastAPI, optional): the FastAPI app. Defaults to main.app.
-                host (str, optional): the host ip. Defaults to '127.0.0.1'.
-                port (int, optional): the port. Defaults to PORT.
-            """
-            self._startup_done = asyncio.Event()
-            super().__init__(config=uvicorn.Config(app=main_temp, host=host, port=port))
-
-        async def startup(self, sockets: Optional[List] = None) -> None:
-            """Override uvicorn startup"""
-            await super().startup(sockets=sockets)
-            self.config.setup_event_loop()
-            self._startup_done.set()
-
-        async def up(self) -> None:
-            """Start up server asynchronously"""
-            self._serve_task = asyncio.create_task(self.serve())
-            await self._startup_done.wait()
-
-        async def down(self) -> None:
-            """Shut down server asynchronously"""
-            self.should_exit = True
-            await self._serve_task
-
-    server = UvicornTestServer()
-    await server.up()
+async def startup_and_shutdown_uvicorn(host, port):
+    from pyrambium.base.test.server import UvicornTestServer
+    from pyrambium.app import main_temp
+    """Start server as test fixture and tear down after test"""
+    uvicorn_server = UvicornTestServer(app=main_temp.app, host=host, port=port)
+    await uvicorn_server.up()
     yield
-    await server.down()
+    await uvicorn_server.down()

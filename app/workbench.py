@@ -1,11 +1,11 @@
 from pyrambium.base.service.scheduler import Scheduler
 from pyrambium.base.service.action import Action
-from pyrambium.base.service.util import resolve_instance, FilePath
+from pyrambium.base.service.util import resolve_instance, FilePathe
 from pyrambium.base.service.mothership import Mothership
 from pydantic import BaseModel
 import requests
 
-class ApiServer(BaseModel):
+class ApiHost(BaseModel):
     ip_addr:str
     port:int=8000
 
@@ -22,7 +22,7 @@ class ApiServer(BaseModel):
         return self.get(f"/mothership/save_to_name/{name}")
     def get_saved_dir(self):
         return self.get("/mothership/saved_dir")
-    def set_saved_dir(self, saved_dir:FilePath):
+    def set_saved_dir(self, saved_dir:FilePathe):
         return self.put("/mothership/saved_dir", saved_dir)
 
     # /actions
@@ -90,12 +90,12 @@ class ApiServer(BaseModel):
         return response.json()
     
 class Workbench(BaseModel):
-    servers:dict={}
-    def add_server(self, name:str, server:ApiServer):
-        self.servers[name] = server
-    def get_server(self, name:str):
-        return self.servers.get(name, None)
-    def get_servers(self):
-        return list(self.servers.values())
+    api_hosts:dict={}
+    def add_api_host(self, name:str, api_host:ApiHost):
+        self.api_hosts[name] = api_host
+    def get_api_host(self, name:str):
+        return self.api_hosts.get(name, None)
+    def get_api_hosts(self):
+        return list(self.api_hosts.values())
     def count(self):
-        return len(self.servers)
+        return len(self.api_hosts)
