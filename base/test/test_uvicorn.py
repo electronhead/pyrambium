@@ -2,12 +2,7 @@
 These test cases run the API within each test function call, allowing API http calls
 to a live and albeit short-lived Pyrambium server.
 
-This class and the fixture, startup_and_shutdown_uvicorn rely on asynchronous processing.
-
-Notes:
-
-1. Running all test cases at the same time sometimes results in failures in some of the
-test functions in this class. They succeed when run individually. Something to fix perhaps.
+This class and the fixture, startup_and_shutdown_uvicorn, rely on asynchronous processing.
 """
 import time
 import pytest
@@ -22,7 +17,7 @@ from httpx import AsyncClient
 @pytest.mark.asyncio
 async def test_uvicorn_1(startup_and_shutdown_uvicorn, base_url):
     """
-    test to see if uvicorn responds to http requests inside the function
+    simple test to see if uvicorn responds to http requests inside the function
     """
     async with AsyncClient(base_url=f"{base_url}/") as ac:
         response = await ac.get("/")
@@ -137,9 +132,11 @@ async def assert_job_count(base_url:str, n:int):
     assert job_count == n, f"expected a job count of ({n})"
 
 async def start_and_stop_jobs(base_url:str, pause:int):
-    await get(base_url, '/jobs/start')
+    response = await get(base_url, '/jobs/start')
+    assert response.status_code == 200, 'failed to start jobs'
     time.sleep(pause)
-    await get(base_url, '/jobs/stop')
+    response = await get(base_url, '/jobs/stop')
+    assert response.status_code == 200, 'failed to stop jobs'
 
 async def get(base_url:str, path:str):
     async with AsyncClient(base_url=base_url) as ac:
