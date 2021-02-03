@@ -1,12 +1,12 @@
 import pytest
-from pyrambium.base.test.fixtures import friends
+import time
+from .. service.mothership import Mothership
+from .fixtures import friends
 
 def test_schedule_action(friends):
     """
     Tests Mothership and Continuous objects running a scheduled action.
     """
-    import time
-
     mothership, scheduler, action = friends()
 
     mothership.add_action('foo', action)
@@ -44,8 +44,6 @@ def test_reschedule_action(friends):
     """
     Tests unscheduling and then rescheduling an action.
     """
-    import time
-
     mothership, scheduler, action = friends()
 
     mothership.add_action('foo', action)
@@ -67,7 +65,6 @@ def test_reschedule_action(friends):
     assert line is not None and type(line) is str and len(line) > 0
 
 def test_saved_dir_1(tmp_path):
-    from pyrambium.base.service.mothership import Mothership
     saved_dir = str(tmp_path)
     mothership = Mothership()
     mothership.set_saved_dir(saved_dir=saved_dir)
@@ -75,6 +72,6 @@ def test_saved_dir_1(tmp_path):
 
 def test_saved_dir_2(tmp_path):
     saved_dir = str(tmp_path)
-    from pyrambium.base.service.mothership import Mothership
+    from .. service.mothership import Mothership
     mothership = Mothership(saved_dir=saved_dir)
     assert mothership.get_saved_dir() == saved_dir

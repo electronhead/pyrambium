@@ -1,7 +1,7 @@
-from pyrambium.app.shared import return_success, raised_exception, get_mothership
-from pyrambium.base.service.util import FilePathe
 from fastapi import APIRouter, status
 from typing import List
+from .. app.shared import return_success, raised_exception, get_mothership
+from .. service.util import FilePathe
 
 router = APIRouter(
     prefix="/mothership",

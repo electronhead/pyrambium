@@ -6,13 +6,12 @@ This class and the fixture, startup_and_shutdown_uvicorn, rely on asynchronous p
 """
 import time
 import pytest
-from pyrambium.base.service.action import FileHeartbeat, Action
-from pyrambium.base.service.scheduler import TimelyScheduler, Scheduler
-from pyrambium.base.service.util import FilePathe, ResolveBody
-from pyrambium.app.workbench import ApiHost
-from pyrambium.base.test.fixtures import port, host, startup_and_shutdown_uvicorn, base_url
 from pydantic import BaseModel
 from httpx import AsyncClient
+from .. service.action import FileHeartbeat, Action
+from .. service.scheduler import TimelyScheduler, Scheduler
+from .. service.util import FilePathe, ResolveBody
+from .. test.fixtures import port, host, startup_and_shutdown_uvicorn, base_url
 
 @pytest.mark.asyncio
 async def test_uvicorn_1(startup_and_shutdown_uvicorn, base_url):

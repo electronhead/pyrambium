@@ -2,9 +2,9 @@
 This code in this module is used in FastAPI and APIRouter code.
 """
 from fastapi import status, HTTPException, APIRouter
-from pyrambium.base.service.mothership import Mothership
-from pyrambium.base.service.continuous import Continuous
-from pyrambium.base.service.util import Now
+from .. service.mothership import Mothership
+from .. service.continuous import Continuous
+from .. service.util import Now
 
 def return_success(dictionary:dict):
     """

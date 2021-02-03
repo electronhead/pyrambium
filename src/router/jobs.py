@@ -1,6 +1,6 @@
-from pyrambium.base.service.continuous import Continuous
-from pyrambium.app.shared import return_success, raised_exception, get_continuous
 from fastapi import APIRouter, status
+from .. service.continuous import Continuous
+from .. app.shared import return_success, raised_exception, get_continuous
 
 router = APIRouter(
     prefix="/jobs",

@@ -1,9 +1,9 @@
-from pyrambium.base.service.scheduler import Scheduler
-from pyrambium.base.service.action import Action
-from pyrambium.base.service.util import resolve_instance, FilePathe
-from pyrambium.base.service.mothership import Mothership
 from pydantic import BaseModel
 import requests
+from .. service.scheduler import Scheduler
+from .. service.action import Action
+from .. service.util import resolve_instance, FilePathe
+from .. service.mothership import Mothership
 
 class ApiHost(BaseModel):
     ip_addr:str

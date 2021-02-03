@@ -1,6 +1,7 @@
-from pyrambium.base.service.continuous import Continuous
-from pyrambium.base.service.util import TimeUnit
 import time
+from .. service.continuous import Continuous
+from .. service.util import TimeUnit, PP
+from .. service.action import Action, ActionPayload
 
 def test_timely_callable(tmp_path):
     """
@@ -66,10 +67,6 @@ def test_file_action(tmp_path):
     """
     This test exercises the schedule_timely_callable method.
     """
-    from pyrambium.base.service.action import Action, ActionPayload
-    from pyrambium.base.service.continuous import Continuous
-    from pyrambium.base.service.util import PP
-    import time
 
     class FileAction(Action):
         def execute(self, tag=None, scheduler_info:dict=None):

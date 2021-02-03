@@ -1,8 +1,8 @@
-from pyrambium.base.service.action import Action
-import pyrambium.addendum.service.action
-from pyrambium.base.service.util import ResolveBody
-from pyrambium.app.shared import return_success, raised_exception, get_mothership
+
 from fastapi import APIRouter, status, Depends
+from .. service.action import Action
+from .. service.util import ResolveBody
+from .. app.shared import return_success, raised_exception, get_mothership
 
 router = APIRouter(
     prefix='',

@@ -4,12 +4,12 @@ pytest fixtures for unit testing
 
 import random
 import pytest
-from pyrambium.base.service.mothership import Mothership
-from pyrambium.base.service.action import FileHeartbeat
-from pyrambium.base.service.scheduler import TimelyScheduler
-from pyrambium.base.service.continuous import Continuous
-from pyrambium.base.test.server import UvicornTestServer
-from pyrambium.app import main_temp
+from .. service.mothership import Mothership
+from .. service.action import FileHeartbeat
+from .. service.scheduler import TimelyScheduler
+from .. service.continuous import Continuous
+from .. app import main_temp
+from .server import UvicornTestServer
 
 @pytest.fixture
 def friends(tmp_path):

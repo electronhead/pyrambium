@@ -1,8 +1,8 @@
-from pyrambium.base.service.scheduler import Scheduler
-import pyrambium.addendum.service.scheduler 
-from pyrambium.base.service.util import ResolveBody
-from pyrambium.app.shared import return_success, raised_exception, get_mothership
 from fastapi import APIRouter, status, Depends
+from .. service.scheduler import Scheduler
+from .. service.util import ResolveBody
+from .. app.shared import return_success, raised_exception, get_mothership
+
 
 router = APIRouter(
     prefix='',

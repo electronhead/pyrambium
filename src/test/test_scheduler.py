@@ -1,7 +1,8 @@
+from datetime import time
+from .. service.scheduler import Scheduler
+from .. service.util import Now
+    
 def test_during_period():
-    from pyrambium.base.service.scheduler import Scheduler
-    from pyrambium.base.service.util import Now
-    from datetime import time
 
     daytime = (time(6,0,0), time(18,0,0))
     nighttime = (time(18,0,0), time(6,0,0))

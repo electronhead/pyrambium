@@ -2,10 +2,11 @@
 This module is the top of the path tree. Establishes all sub-path routers.
 """
 from fastapi import FastAPI
-from pyrambium.app.router import actions, schedulers, jobs, mothership
-from pyrambium.base.service.mothership import Mothership
-from pyrambium.base.service.continuous import Continuous
-from pyrambium.app.shared import set_continuous, set_mothership
+import uvicorn
+from .. service.mothership import Mothership
+from .. service.continuous import Continuous
+from .. router import actions, schedulers, mothership, jobs
+from .shared import set_continuous, set_mothership
 
 app = FastAPI()
 

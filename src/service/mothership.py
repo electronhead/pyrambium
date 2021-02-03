@@ -6,16 +6,14 @@ endpoints of a restful api and supports testing outside of the restful api imple
 Instances of this class contain Schedulers and Actions, which can at any point be submitted to and removed from the
 job scheduling mechanism of the schedule library (refer to the 'continuous' module).
 """
-from pyrambium.base.service.util import PP, Dirs, resolve_instance
-from pyrambium.base.service.action import Action
-from pyrambium.base.service.scheduler import Scheduler
-from pyrambium.addendum.service.action import Action
-from pyrambium.addendum.service.scheduler import Scheduler
-from pyrambium.base.service.continuous import Continuous
 from pydantic import BaseModel, PrivateAttr
 from threading import RLock
 import pickle
 import json
+from .util import PP, Dirs, resolve_instance
+from .action import Action
+from .scheduler import Scheduler
+from .continuous import Continuous
 
 class Mothership(BaseModel):
     """

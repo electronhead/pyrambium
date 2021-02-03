@@ -1,7 +1,7 @@
-from pyrambium.base.service.util import PP, IP, Now, object_info, HttpVerb
 from pydantic import BaseModel
 from typing import Optional
 import requests
+from .util import PP, IP, Now, object_info, HttpVerb
 
 class Action(BaseModel):
     """
