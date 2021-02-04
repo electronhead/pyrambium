@@ -1,10 +1,9 @@
 # starting point
 # https://github.com/github/gitignore/blob/master/Python.gitignore
 
-**.DS_Store
-output/
-saved/
+.DS_Store
 .vscode/
+.pytest_cache/
 
 #=================
 

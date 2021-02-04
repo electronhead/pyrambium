@@ -4,12 +4,12 @@ pytest fixtures for unit testing
 
 import random
 import pytest
-from .. service.mothership import Mothership
-from .. service.action import FileHeartbeat
-from .. service.scheduler import TimelyScheduler
-from .. service.continuous import Continuous
-from .. app import main_temp
-from .server import UvicornTestServer
+from mothership.mothership import Mothership
+from mothership.action import FileHeartbeat
+from mothership.scheduler import TimelyScheduler
+from mothership.continuous import Continuous
+from app import main_temp
+from .uvicorn_server import UvicornTestServer
 
 @pytest.fixture
 def friends(tmp_path):

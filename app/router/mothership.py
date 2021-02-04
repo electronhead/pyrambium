@@ -1,7 +1,7 @@
 from fastapi import APIRouter, status
 from typing import List
-from .. app.shared import return_success, raised_exception, get_mothership
-from .. service.util import FilePathe
+from app.shared import return_success, raised_exception, get_mothership
+from mothership.util import FilePathe
 
 router = APIRouter(
     prefix="/mothership",

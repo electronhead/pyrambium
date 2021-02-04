@@ -3,9 +3,9 @@ This module is the top of the path tree. Establishes all sub-path routers.
 """
 from fastapi import FastAPI
 import uvicorn
-from .. service.mothership import Mothership
-from .. service.continuous import Continuous
-from .. router import actions, schedulers, mothership, jobs
+from mothership.mothership import Mothership
+from mothership.continuous import Continuous
+from .router import actions, schedulers, mothership, jobs
 from .shared import set_continuous, set_mothership
 
 app = FastAPI()

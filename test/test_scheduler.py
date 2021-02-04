@@ -1,6 +1,6 @@
 from datetime import time
-from .. service.scheduler import Scheduler
-from .. service.util import Now
+from mothership.scheduler import Scheduler
+from mothership.util import Now
     
 def test_during_period():
 

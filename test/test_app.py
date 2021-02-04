@@ -8,10 +8,10 @@ import time
 import pytest
 from pydantic import BaseModel
 from httpx import AsyncClient
-from .. service.action import FileHeartbeat, Action
-from .. service.scheduler import TimelyScheduler, Scheduler
-from .. service.util import FilePathe, ResolveBody
-from .. test.fixtures import port, host, startup_and_shutdown_uvicorn, base_url
+from mothership.action import FileHeartbeat, Action
+from mothership.scheduler import TimelyScheduler, Scheduler
+from mothership.util import FilePathe, ResolveBody
+from .fixtures import port, host, startup_and_shutdown_uvicorn, base_url
 
 @pytest.mark.asyncio
 async def test_uvicorn_1(startup_and_shutdown_uvicorn, base_url):

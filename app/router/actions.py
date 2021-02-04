@@ -1,8 +1,8 @@
 
 from fastapi import APIRouter, status, Depends
-from .. service.action import Action
-from .. service.util import ResolveBody
-from .. app.shared import return_success, raised_exception, get_mothership
+from mothership.action import Action
+from mothership.util import ResolveBody
+from app.shared import return_success, raised_exception, get_mothership
 
 router = APIRouter(
     prefix='',

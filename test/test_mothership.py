@@ -1,6 +1,6 @@
 import pytest
 import time
-from .. service.mothership import Mothership
+from mothership.mothership import Mothership
 from .fixtures import friends
 
 def test_schedule_action(friends):
@@ -72,6 +72,5 @@ def test_saved_dir_1(tmp_path):
 
 def test_saved_dir_2(tmp_path):
     saved_dir = str(tmp_path)
-    from .. service.mothership import Mothership
     mothership = Mothership(saved_dir=saved_dir)
     assert mothership.get_saved_dir() == saved_dir

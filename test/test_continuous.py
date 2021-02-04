@@ -1,7 +1,7 @@
 import time
-from .. service.continuous import Continuous
-from .. service.util import TimeUnit, PP
-from .. service.action import Action, ActionPayload
+from mothership.continuous import Continuous
+from mothership.util import TimeUnit, PP
+from mothership.action import Action, ActionPayload
 
 def test_timely_callable(tmp_path):
     """

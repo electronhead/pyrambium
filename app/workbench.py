@@ -1,9 +1,9 @@
 from pydantic import BaseModel
 import requests
-from .. service.scheduler import Scheduler
-from .. service.action import Action
-from .. service.util import resolve_instance, FilePathe
-from .. service.mothership import Mothership
+from mothership.scheduler import Scheduler
+from mothership.action import Action
+from mothership.util import resolve_instance, FilePathe
+from mothership.mothership import Mothership
 
 class ApiHost(BaseModel):
     ip_addr:str
