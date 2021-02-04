@@ -1,6 +1,6 @@
 # https://hub.docker.com/_/python
 
-from python:3.9.1
+FROM python:3.9.1
 
 WORKDIR /Users/electronhead/dev/pyrambium/
 
