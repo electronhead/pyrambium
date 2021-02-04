@@ -11,9 +11,6 @@ To do:
 - authentication / authorization
 - Nginx coupling
 - more unit tests
-- strategies
-  - deployment to many remote raspberry pi's
-  - integration of suites of actions
 - documentation
 
 Relies on (so far):
@@ -23,6 +20,8 @@ Relies on (so far):
 - Pydantic
 - schedule
 - pytest
+- httpx
+- asyncio
 
 Running on (so far):
 
