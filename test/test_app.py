@@ -10,7 +10,7 @@ from pydantic import BaseModel
 from httpx import AsyncClient
 from mothership.action import FileHeartbeat, Action
 from mothership.scheduler import TimelyScheduler, Scheduler
-from mothership.util import FilePathe, ResolveBody
+from mothership.util import FilePathe, resolve_instance
 from .fixtures import port, host, startup_and_shutdown_uvicorn, base_url
 
 @pytest.mark.asyncio
@@ -86,7 +86,7 @@ async def add_action(base_url:str, name:str, action:Action):
     assert response.status_code == 200, f"failed to put action ({name})"
     response = await get(base_url, path=f"/actions/{name}")
     assert response.status_code == 200, f"failed to get action ({name})"
-    retrieved_action = ResolveBody(Action)(response.json())
+    retrieved_action = resolve_instance(Action, response.json())
     assert isinstance(retrieved_action, Action), str(type(retrieved_action))
 
 async def add_scheduler(base_url:str, name:str, scheduler:Scheduler):
@@ -95,7 +95,7 @@ async def add_scheduler(base_url:str, name:str, scheduler:Scheduler):
     assert response.status_code == 200, f"failed to put scheduler ({name})"
     response = await get(base_url, path=f"/schedulers/{name}")
     assert response.status_code == 200, f"failed to get scheduler ({name})"
-    retrieved_scheduler = ResolveBody(Scheduler)(response.json())
+    retrieved_scheduler = resolve_instance(Scheduler, response.json())
     assert isinstance(retrieved_scheduler, Scheduler), str(type(retrieved_scheduler))
 
 async def schedule_action(base_url:str, scheduler_name:str, action_name:str):
@@ -114,7 +114,7 @@ async def reset_mothership_continuous(base_url:str, tmp_dir:str):
     assert response.status_code == 200, 'failed to set saved_dir'
     response = await get(base_url=base_url, path='/mothership/saved_dir')
     assert response.status_code == 200, 'failed to get saved_dir'
-    saved_saved_dir = ResolveBody(FilePathe)(response.json())
+    saved_saved_dir = resolve_instance(FilePathe, response.json())
     assert saved_saved_dir == saved_dir
 
     # empty the mothership and stop the jobs if they're running

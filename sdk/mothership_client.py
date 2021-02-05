@@ -5,7 +5,7 @@ from mothership.action import Action
 from mothership.util import resolve_instance, FilePathe
 from mothership.mothership import Mothership
 
-class ApiHost(BaseModel):
+class MothershipClient(BaseModel):
     ip_addr:str
     port:int=8000
 
@@ -88,14 +88,3 @@ class ApiHost(BaseModel):
         cmd = f"http://{self.ip_addr}:{self.port}{path}"
         response = verb(cmd, data.json())
         return response.json()
-    
-class Workbench(BaseModel):
-    api_hosts:dict={}
-    def add_api_host(self, name:str, api_host:ApiHost):
-        self.api_hosts[name] = api_host
-    def get_api_host(self, name:str):
-        return self.api_hosts.get(name, None)
-    def get_api_hosts(self):
-        return list(self.api_hosts.values())
-    def count(self):
-        return len(self.api_hosts)
