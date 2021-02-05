@@ -5,8 +5,8 @@ from fastapi import FastAPI
 import uvicorn
 from mothership.mothership import Mothership
 from mothership.continuous import Continuous
-from .router import actions, schedulers, mothership, jobs
-from .shared import set_continuous, set_mothership
+from app.router import actions, schedulers, mothership, jobs
+from app.shared import set_continuous, set_mothership
 
 app = FastAPI()
 
