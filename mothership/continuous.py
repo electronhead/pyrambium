@@ -6,7 +6,7 @@ from schedule import Scheduler
 from threading import Event, Thread
 import time
 from collections.abc import Callable
-from .util import Now, TimeUnit
+from mothership.util import Now, TimeUnit
 
 class Continuous(Scheduler):
     """
