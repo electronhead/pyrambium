@@ -11,7 +11,8 @@ from httpx import AsyncClient
 from mothership.action import FileHeartbeat, Action
 from mothership.scheduler import TimelyScheduler, Scheduler
 from mothership.util import FilePathe, resolve_instance
-from .fixtures import port, host, startup_and_shutdown_uvicorn, base_url
+from test.fixtures import port, host, startup_and_shutdown_uvicorn, base_url
+from mothership.resolver import resolve_action, resolve_scheduler
 
 @pytest.mark.asyncio
 async def test_uvicorn_1(startup_and_shutdown_uvicorn, base_url):
@@ -86,7 +87,7 @@ async def add_action(base_url:str, name:str, action:Action):
     assert response.status_code == 200, f"failed to put action ({name})"
     response = await get(base_url, path=f"/actions/{name}")
     assert response.status_code == 200, f"failed to get action ({name})"
-    retrieved_action = resolve_instance(Action, response.json())
+    retrieved_action = resolve_action(response.json())
     assert isinstance(retrieved_action, Action), str(type(retrieved_action))
 
 async def add_scheduler(base_url:str, name:str, scheduler:Scheduler):
@@ -95,7 +96,7 @@ async def add_scheduler(base_url:str, name:str, scheduler:Scheduler):
     assert response.status_code == 200, f"failed to put scheduler ({name})"
     response = await get(base_url, path=f"/schedulers/{name}")
     assert response.status_code == 200, f"failed to get scheduler ({name})"
-    retrieved_scheduler = resolve_instance(Scheduler, response.json())
+    retrieved_scheduler = resolve_scheduler(response.json())
     assert isinstance(retrieved_scheduler, Scheduler), str(type(retrieved_scheduler))
 
 async def schedule_action(base_url:str, scheduler_name:str, action_name:str):

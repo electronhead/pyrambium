@@ -1,8 +1,7 @@
 
 from fastapi import APIRouter, status, Depends
-from mothership.action import Action
-from mothership.util import ResolveBody
 from app.shared import return_success, raised_exception, get_mothership
+from mothership.resolver import resolve_action
 
 router = APIRouter(
     prefix='',
@@ -18,7 +17,7 @@ def get_action(action_name:str):
         raise raised_exception(f"failed to retrieve the action ({action_name})", e)
 
 @router.put('/actions/{action_name}', status_code=status.HTTP_200_OK)
-def add_action(action_name:str, action=Depends(ResolveBody(Action))):
+def add_action(action_name:str, action=Depends(resolve_action)):
     try:
         assert action, f"couldn't resolve class for action ({action_name})"
         get_mothership(router).add_action(action_name=action_name, action=action)

@@ -1,7 +1,7 @@
 import pytest
 import time
 from mothership.mothership import Mothership
-from .fixtures import friends
+from test.fixtures import friends
 
 def test_schedule_action(friends):
     """

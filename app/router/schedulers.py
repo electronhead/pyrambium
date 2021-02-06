@@ -1,7 +1,6 @@
 from fastapi import APIRouter, status, Depends
-from mothership.scheduler import Scheduler
-from mothership.util import ResolveBody
 from app.shared import return_success, raised_exception, get_mothership
+from mothership.resolver import resolve_scheduler
 
 
 router = APIRouter(
@@ -26,7 +25,7 @@ def get_scheduler(scheduler_name:str):
         raise raised_exception(f"failed to retrieve the scheduler ({action_name})", e)
 
 @router.put('/schedulers/{scheduler_name}', status_code=status.HTTP_200_OK)
-def add_scheduler(scheduler_name:str, scheduler=Depends(ResolveBody(Scheduler))):
+def add_scheduler(scheduler_name:str, scheduler=Depends(resolve_scheduler)):
     try:
         assert scheduler, f"couldn't resolve class for scheduler ({scheduler_name})"
         get_mothership(router).add_scheduler(scheduler_name=scheduler_name, scheduler=scheduler)

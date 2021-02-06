@@ -75,26 +75,6 @@ def object_info(obj):
 
 # classes
 
-class ResolveBody:
-    def __init__(self, klass):
-        self.klass = klass
-    def __call__(self, body:dict):
-        if body:
-            return resolve_instance(self.klass, body)
-        return None
-
-
-
-def subclass_union(klass):
-    """
-    usage:
-    union_of_subclasses_of_Action = subclass_union(base.Action)
-    note:
-    superceded by resolve_instance & ResolveBody in FastAPI path dependencies
-    """
-    return reduce(lambda a, b=None: Union[b,a], all_visible_subclasses(klass))
-
-
 class Now:
     @classmethod
     def s(cls):
