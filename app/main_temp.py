@@ -1,8 +1,9 @@
 """
 This module is the top of the path tree. Establishes all sub-path routers.
+
+It is used for unit testing.
 """
 from fastapi import FastAPI
-import uvicorn
 from mothership.mothership import Mothership
 from mothership.continuous import Continuous
 from app.router import actions, schedulers, mothership, jobs

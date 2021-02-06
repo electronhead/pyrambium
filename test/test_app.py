@@ -8,7 +8,8 @@ import time
 import pytest
 from pydantic import BaseModel
 from httpx import AsyncClient
-from mothership.action import FileHeartbeat, Action
+from mothership.action import Action
+from mothership.actions.file_action import FileHeartbeat
 from mothership.scheduler import TimelyScheduler, Scheduler
 from mothership.util import FilePathe, resolve_instance
 from test.fixtures import port, host, startup_and_shutdown_uvicorn, base_url

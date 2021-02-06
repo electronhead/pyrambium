@@ -1,7 +1,8 @@
 from pydantic import BaseModel
 from typing import Optional
 import requests
-from .util import PP, IP, Now, object_info, HttpVerb
+
+from mothership.util import PP, IP, Now, object_info, HttpVerb
 
 class Action(BaseModel):
     """
@@ -18,28 +19,28 @@ class Action(BaseModel):
     def info(self):
         return object_info(self)
 
-class FileHeartbeat(Action):
-    """
-    This class appends status information to a file. This information can include
-    a dictionary [xtra] supplied at instantiation.
-    """
-    file: str
-    xtra: Optional[dict]=None
+# class FileHeartbeat(Action):
+#     """
+#     This class appends status information to a file. This information can include
+#     a dictionary [xtra] supplied at instantiation.
+#     """
+#     file: str
+#     xtra: Optional[dict]=None
 
-    def execute(self, tag=None, scheduler_info:dict=None):
-        payload = ActionPayload.build(action_info=self.info(), scheduler_info=scheduler_info)
-        payload['tag'] = tag if tag else 'N/A'
-        if self.xtra:
-            payload['xtra'] = self.xtra # dictionaries are sorted by key. Nice to have extra information at the bottom.
-        with open(self.file, "a") as outfile:
-            PP.pprint(payload, stream=outfile)
-            outfile.write('\n')
-        return {'outcome':'file appended', 'action':self.info()}
-    def set_xtra(self, xtra:dict=None):
-        self.xtra = xtra
-        return self
-    def get_xtra(self):
-        return self.xtra
+#     def execute(self, tag=None, scheduler_info:dict=None):
+#         payload = ActionPayload.build(action_info=self.info(), scheduler_info=scheduler_info)
+#         payload['tag'] = tag if tag else 'N/A'
+#         if self.xtra:
+#             payload['xtra'] = self.xtra # dictionaries are sorted by key. Nice to have extra information at the bottom.
+#         with open(self.file, "a") as outfile:
+#             PP.pprint(payload, stream=outfile)
+#             outfile.write('\n')
+#         return {'outcome':'file appended', 'action':self.info()}
+#     def set_xtra(self, xtra:dict=None):
+#         self.xtra = xtra
+#         return self
+#     def get_xtra(self):
+#         return self.xtra
 
 class SendHeartbeat(Action):
     """
@@ -59,7 +60,7 @@ class SendHeartbeat(Action):
             raise Exception(response)
         return response.json()
     
-    def request_method():
+    def request_method(self):
         options = {
             HttpVerb.get:requests.get,
             HttpVerb.put:requests.put,
@@ -68,6 +69,17 @@ class SendHeartbeat(Action):
             HttpVerb.delete:requests.delete
         }
         return options[self.http_verb]
+
+# class Led(Action):
+#     pin:int
+#     on:bool
+
+#     def execute(self):
+#         GPIO.setmode(GPIO.BCM)
+#         GPIO.setwarnings(False)
+#         GPIO.setup(self.pin, GPIO.OUT)
+#         GPIO.output(self.pin, GPIO.HIGH if self.on else GPIO.LOW)
+
 
 # auxilliary
    
