@@ -11,10 +11,11 @@ from threading import RLock
 import pickle
 import json
 import os
-from mothership.util import PP, Dirs, resolve_instance
+from mothership.util import PP, Dirs
 from mothership.action import Action
 from mothership.scheduler import Scheduler
 from mothership.continuous import Continuous
+from mothership.resolver import resolve_action, resolve_scheduler
 
 class Mothership(BaseModel):
     """
@@ -225,8 +226,6 @@ class Mothership(BaseModel):
     def instantiate_from_dict(cls, dictionary:dict={}):
         """
         converts dictionary to an Mothership instance.
-        For resolution to the proper class, it's important that modules containing
-        Action and Scheduler classes are imported in this module.
         """
         if len(dictionary) == 0:
             return Mothership(saved_dir=Dirs.saved_dir)
@@ -237,9 +236,9 @@ class Mothership(BaseModel):
             schedulers_actions = dictionary['schedulers_actions']
             # replace key's value for each key...
             for action_name in actions:
-                actions[action_name] = resolve_instance(Action, actions[action_name])
+                actions[action_name] = resolve_action(actions[action_name])
             for scheduler_name in schedulers:
-                schedulers[scheduler_name] = resolve_instance(Scheduler, schedulers[scheduler_name])
+                schedulers[scheduler_name] = resolve_scheduler(schedulers[scheduler_name])
             return Mothership(
                 saved_dir=saved_dir,
                 actions=actions,
