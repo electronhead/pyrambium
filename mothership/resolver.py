@@ -9,6 +9,7 @@ make sure all modules that contain subclasses of Action are imported below
 import mothership.action as action
 import mothership.actions.file_action
 import mothership.actions.gpio_action
+import mothership.actions.http_action
 
 """
 make sure all modules that contain subclasses of Scheduler are imported below

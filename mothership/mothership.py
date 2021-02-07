@@ -10,6 +10,7 @@ from pydantic import BaseModel, PrivateAttr
 from threading import RLock
 import pickle
 import json
+import os
 from mothership.util import PP, Dirs, resolve_instance
 from mothership.action import Action
 from mothership.scheduler import Scheduler
@@ -71,6 +72,8 @@ class Mothership(BaseModel):
         return self.saved_dir
     def set_saved_dir(self, saved_dir:str):
         with Lok.lock:
+            if not os.path.exists(saved_dir):
+                os.makedirs(saved_dir)
             self.saved_dir = saved_dir
             self.save_current()
 
@@ -100,15 +103,13 @@ class Mothership(BaseModel):
         with Lok.lock:
             assert action_name in self.actions, f"action ({action_name}) does not exist"
             return self.actions.get(action_name)
-    def get_actions(self):
-        with Lok.lock:
-            return self.actions
     def remove_action(self, action_name:str):
         with Lok.lock:
             assert action_name in self.actions, f"action ({action_name}) does not exist"
             for scheduler_name in self.schedulers:
                 self.unschedule_action(action_name)
-                self.schedulers_actions[scheduler_name].remove(action_name)
+                action_names = self.schedulers_actions[scheduler_name]
+                if action_name in action_names: action_names.remove(action_name)
             self.actions.pop(action_name, None)
             self.save_current()
     def update_action(self, action_name:str, dictionary:dict):
@@ -144,7 +145,7 @@ class Mothership(BaseModel):
     def update_scheduler(self, scheduler_name:str, dictionary:dict):
         with Lok.lock:
             assert scheduler_name in self.schedulers, f"scheduler ({scheduler_name}) does not exist"
-            scheduler = self.schedulers.get(name)
+            scheduler = self.schedulers.get(scheduler_name)
             scheduler.__dict__.update(dictionary)
             self.reschedule_scheduler(scheduler_name)
             self.save_current()
@@ -175,17 +176,18 @@ class Mothership(BaseModel):
                 if action_name in self.schedulers_actions[scheduler_name]:
                     tag = self.scheduler_tag(scheduler_name, action_name)
                     self._continuous.clear(tag)
-                    self.schedulers_actions[scheduler_name].remove(action_name)
+                    action_names = self.schedulers_actions[scheduler_name]
+                    if action_name in action_names: action_names.remove(action_name)
             self.save_current()
     def reschedule_action(self, action_name:str):
         with Lok.lock:
-            assert scheduler_name in self.schedulers, f"scheduler ({scheduler_name}) does not exist"
+            assert action_name in self.actions, f"action ({action_name}) does not exist"
             for scheduler_name in self.schedulers_actions:
                 if action_name in self.schedulers_actions[scheduler_name]:
                     tag = self.scheduler_tag(scheduler_name, action_name)
                     self._continuous.clear(tag)
                     scheduler = self.get_scheduler(scheduler_name)
-                    action = self.actions[ation_name]
+                    action = self.actions[action_name]
                     scheduler.schedule_action(tag, action, self._continuous)
     def unschedule_scheduler(self, scheduler_name:str):
         with Lok.lock:
@@ -199,11 +201,11 @@ class Mothership(BaseModel):
         with Lok.lock:
             assert scheduler_name in self.schedulers, f"scheduler ({scheduler_name}) does not exist"
             scheduler_actions = self.schedulers_actions[scheduler_name]
-            for action_name in self.scheduler_actions:
+            for action_name in scheduler_actions:
                 tag = self.scheduler_tag(scheduler_name, action_name)
                 self._continuous.clear(tag)
                 scheduler = self.get_scheduler(scheduler_name)
-                action = self.actions[ation_name]
+                action = self.actions[action_name]
                 scheduler.schedule_action(tag, action, self._continuous)
     def reschedule_all_schedulers(self):
         with Lok.lock:
@@ -268,7 +270,7 @@ class MothershipsLittleHelper:
             try:    
                 cls.mothership = cls.mothership.load_current()
             except Exception as e:
-                pass # TODO: log it!
+                print(e) # TODO: log it!
             cls.mothership.set_continuous(Continuous.get())
             cls.mothership.initialize()
             cls.mothership.reschedule_all_schedulers()

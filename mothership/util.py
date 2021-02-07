@@ -5,7 +5,7 @@ import netifaces
 from datetime import datetime
 from typing import Union
 from functools import reduce
-from os import environ, getenv
+import os
 from pydantic import BaseModel
 from typing import List
 from pathlib import Path
@@ -137,14 +137,25 @@ class IP:
 
 
 class Dirs:
-    output_label, output_default_dir = 'PYRAMBIUM_OUTPUT_DIR', '/tmp/pyrambium/output/'
-    saved_label, saved_default_dir = 'PYRAMBIUM_SAVED_DIR', '/tmp/pyrambium/saved/'
+    """
+    This class determines saved and output directories from environment variables, and if not there, will
+    use the specified defaults and set the corresponding environment variables.
+
+    If paths do not exist, this class will attempt to create the implied directory structure. Unless another
+    idea presents itself, it's probably best to leave the defaults as is, keeping the directories and
+    files in the installer's home directory. Can tackle file permissions for root-based directories later (/usr,
+    /var, etc.).
+    """
+    output_label, output_default_dir = 'PYRAMBIUM_OUTPUT_DIR', str(Path.home() / 'pyrambium/output') + '/'
+    saved_label, saved_default_dir = 'PYRAMBIUM_SAVED_DIR', str(Path.home() / 'pyrambium/saved') + '/'
     @classmethod
     def compute_dir(cls, label, default_dir):
-        dir = getenv(label)
+        dir = os.getenv(label)
         if not dir:
             dir = default_dir
-            environ[label] = dir
+            os.environ[label] = dir # setting the environment variable is somewhat opinioated.
+        if not os.path.exists(dir):
+            os.makedirs(dir) # creating directories if absent is also somewhat opinionated. Opting for ease of use.
         return dir
     @classmethod
     def output_dir(cls):
