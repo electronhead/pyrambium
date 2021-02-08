@@ -91,17 +91,17 @@ class Continuous(Scheduler):
     # methods added to adapt to Mothership scheduling model (an adaptation of the schedule library model)
     def schedule_timely_callable(self, tag:str, callable:Callable[...,...], interval:int=1, hour:int=None, minute:int=None, second:int=None):
         time_unit, clock_time = TimeUnit.second, None # on a second boundary
-        if hour:
-            if not minute:
+        if hour is not None:
+            if minute is None:
                 minute = 0
-            if not second:
+            if second is None:
                 second = 0
             time_unit, clock_time = TimeUnit.day, f"{hour:02}:{minute:02}:{second:02}" # 16:15:05 on a day boundary
-        elif minute:
-            if not second:
+        elif minute is not None:
+            if second is None:
                 second = 0
             time_unit, clock_time = TimeUnit.hour, f":{minute:02}:{second:02}" # :15:05 on an hour boundary
-        elif second:
+        elif second is not None:
             time_unit, clock_time =  TimeUnit.minute, f":{second:02}" # :05 on a minute boundary
 
         if time_unit == TimeUnit.day:

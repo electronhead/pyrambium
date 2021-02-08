@@ -92,18 +92,18 @@ class Now:
 class Output:
     """
     usage:
-    Output.pprint({'a', 'abc'}, ('debug', Output.debug()))
+    Output.pprint(dictionary={'a', 'abc'}, lev_fil=('debug', Output.debug()))
     """
     @classmethod
     def debug(cls):
-        return 'debug', Dirs.output_dir()
+        return 'debug', Dirs.output_dir() + 'output.txt'
 
     @classmethod
     def pprint(cls, lev_fil:tuple[str,str], dictionary:dict):
         level, file = lev_fil
+        something = {'level':level}
+        something.update(dictionary)
         with open(file, 'a') as outfile:
-            something = {'level':level}
-            something.update(dictionary)
             PP.pprint(something, stream=outfile)
 
 class PP:

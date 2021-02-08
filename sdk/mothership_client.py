@@ -48,7 +48,7 @@ class MothershipClient(BaseModel):
         return self.put(f"/schedulers/{scheduler_name}", scheduler)
     def remove_scheduler(self, scheduler_name:str):
         return self.delete(f"/schedulers/{scheduler_name}")
-    def add_scheduler(self, scheduler_name:str, dictionary:dict):
+    def update_scheduler(self, scheduler_name:str, dictionary:dict):
         return self.patch(f"/schedulers/{scheduler_name}", dictionary)
     def execute_scheduler_actions(self, scheduler_name:str):
         return self.get(f"/schedulers/{scheduler_name}/execute")
@@ -68,8 +68,6 @@ class MothershipClient(BaseModel):
     # verbs
     def get(self, path:str):
         return self.perform(requests.get, path)
-    def get_base_model(self, path:str):
-        return self.perform_get_base_model(requests.get, path)
     def put(self, path:str, data:BaseModel):
         return self.perform_base_model(requests.put, path, data)
     def post(self, path:str, data:BaseModel):
