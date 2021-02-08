@@ -1,23 +1,15 @@
 """
 These functions resolve mothership element instances from supplied dictionaries.
 """
-from mothership.util import resolve_instance
-
-"""
-make sure all modules that contain subclasses of Action are imported below
-"""
 import mothership.action as action
-import mothership.actions.file_action
-import mothership.actions.gpio_action
-import mothership.actions.http_action
-
-"""
-make sure all modules that contain subclasses of Scheduler are imported below
-"""
 import mothership.scheduler as scheduler
+import mothership.util as util
 
 def resolve_action(dictionary:dict):
-    return resolve_instance(action.Action, dictionary)
+    return util.resolve_instance(action.Action, dictionary)
 
 def resolve_scheduler(dictionary:dict):
-    return resolve_instance(scheduler.Scheduler, dictionary)
+    return util.resolve_instance(scheduler.Scheduler, dictionary)
+
+def resolve_file_pathe(dictionary:dict):
+    return FilePath(**dictionary)

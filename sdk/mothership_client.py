@@ -1,7 +1,6 @@
 from pydantic import BaseModel
 import requests
-from mothership.scheduler import Scheduler
-from mothership.action import Action
+from mothership.resolver import resolve_action, resolve_scheduler, resolve_file_pathe
 from mothership.util import resolve_instance, FilePathe
 from mothership.mothership import Mothership
 
@@ -21,13 +20,13 @@ class MothershipClient(BaseModel):
     def save_mothership_to_name(self, name:str):
         return self.get(f"/mothership/save_to_name/{name}")
     def get_saved_dir(self):
-        return self.get("/mothership/saved_dir")
+        return resolve_file_pathe(self.get("/mothership/saved_dir")
     def set_saved_dir(self, saved_dir:FilePathe):
         return self.put("/mothership/saved_dir", saved_dir)
 
     # /actions
     def get_action(self, action_name:str):
-        return resolve_instance(Action, self.get(f"/actions/{action_name}"))
+        return resolve_action(self.get(f"/actions/{action_name}"))
     def add_action(self, action_name:str, action:Action):
         return self.put(f"/actions/{action_name}", action)
     def remove_action(self, action_name:str):
@@ -43,7 +42,7 @@ class MothershipClient(BaseModel):
     def schedule_action(self, scheduler_name:str, action_name:str):
         return self.get(f"/schedulers/{scheduler_name}/actions/{action_name}")
     def get_scheduler(self, scheduler_name:str):
-        return resolve_instance(Scheduler, self.get(f"/schedulers/{scheduler_name}"))
+        return resolve_scheduler(self.get(f"/schedulers/{scheduler_name}"))
     def add_scheduler(self, scheduler_name:str, scheduler:Scheduler):
         return self.put(f"/schedulers/{scheduler_name}", scheduler)
     def remove_scheduler(self, scheduler_name:str):
