@@ -20,7 +20,7 @@ class MothershipClient(BaseModel):
     def save_mothership_to_name(self, name:str):
         return self.get(f"/mothership/save_to_name/{name}")
     def get_saved_dir(self):
-        return resolve_file_pathe(self.get("/mothership/saved_dir")
+        return resolve_file_pathe(self.get("/mothership/saved_dir"))
     def set_saved_dir(self, saved_dir:FilePathe):
         return self.put("/mothership/saved_dir", saved_dir)
 
